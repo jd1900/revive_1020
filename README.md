@@ -160,7 +160,8 @@ sudo install -m 644 \
 ```
 
 Pacifist can install the same two paths if a graphical package browser is
-preferred. Do not select the entire package.
+preferred. Do not select the entire package. See also
+[ValdikSS's Sequoia guide](https://notes.valdikss.org.ru/printers/#HP%20LaserJet%20P1006%20on%20MacOS%20Sequoia).
 
 Open **System Settings → Printers & Scanners → Add Printer**, select the
 LaserJet 1020, then choose **Select Software… → HP LaserJet 1022, 1.6.1**.
