@@ -48,7 +48,8 @@ flowchart TD
 - Apple Silicon/macOS only. The USB code is portable, but Windows and Linux
   packaging has not been added.
 - A4, monochrome, 600 dpi.
-- No system printer queue or normal `Cmd+P` destination yet.
+- The app does not register a system printer queue; see the legacy Apple driver
+  alternative below if a normal `Cmd+P` destination is required.
 - One print job at a time.
 - Ghostscript is a runtime dependency.
 - Only the LaserJet 1020 USB ID has been tested.
@@ -124,6 +125,48 @@ The app looks for Ghostscript in:
 1. the process `PATH`;
 2. `/opt/homebrew/bin/gs`;
 3. `/usr/local/bin/gs`.
+
+## Alternative: system print queue (`Cmd+P`)
+
+Apple's legacy HP 5.1.1 driver can provide a normal macOS print destination.
+This was tested with an HP LaserJet 1020 on Apple Silicon and macOS 27.0. Its
+filters are Intel-only, so Rosetta is required. The normal installer rejects
+macOS versions newer than 15.0; extract only the required runtime files instead
+of installing the full 933 MB package.
+
+Install Rosetta if it is not already present:
+
+```sh
+softwareupdate --install-rosetta --agree-to-license
+```
+
+Download the [official Apple HP 5.1.1 package](https://support.apple.com/kb/dl1888),
+mount it, and extract it using built-in macOS tools:
+
+```sh
+work=$(mktemp -d -t hp1020-apple-driver)
+pkgutil --expand-full \
+    /Volumes/HP_PrinterSupportManual/HewlettPackardPrinterDrivers.pkg \
+    "$work/package"
+
+payload="$work/package/HewlettPackardPrinterDrivers.pkg/Payload/Library/Printers"
+sudo mkdir -p /Library/Printers/hp/laserjet
+sudo ditto \
+    "$payload/hp/laserjet/hplaserjetzjs.bundle" \
+    /Library/Printers/hp/laserjet/hplaserjetzjs.bundle
+sudo install -m 644 \
+    "$payload/PPDs/Contents/Resources/HP LaserJet 1022.gz" \
+    "/Library/Printers/PPDs/Contents/Resources/HP LaserJet 1022.gz"
+```
+
+Pacifist can install the same two paths if a graphical package browser is
+preferred. Do not select the entire package.
+
+Open **System Settings → Printers & Scanners → Add Printer**, select the
+LaserJet 1020, then choose **Select Software… → HP LaserJet 1022, 1.6.1**.
+The bundle contains the `hp1020.acl` firmware init file and the
+`rasterToHPZJS` CUPS filter. On the first print, macOS may require approval for
+the old HP bundle in **Privacy & Security**.
 
 ## What happens during a print
 
@@ -227,4 +270,3 @@ Release builds are only ad-hoc signed unless the maintainer signs and notarizes
 them with an Apple Developer ID. Building from source is the safest option.
 For a downloaded build, use Finder's **Open** context-menu action only after
 verifying that it came from the expected repository/release.
-
