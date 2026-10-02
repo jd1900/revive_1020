@@ -62,10 +62,10 @@ flowchart TD
 - HP LaserJet 1020 connected over USB and powered on.
 - Xcode Command Line Tools.
 - [Homebrew](https://brew.sh/).
-- Ghostscript and libusb:
+- Ghostscript, libusb, and GNU sed:
 
 ```sh
-brew install ghostscript libusb
+brew install ghostscript libusb gnu-sed
 ```
 
 `libusb` is needed when building the app and is then linked statically.
