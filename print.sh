@@ -24,6 +24,11 @@ if (( $# != 1 )) || [[ ! -f "$1" ]]; then
 fi
 
 root=${0:A:h}
+[[ -d "$root/HP 1020 Print.app/Contents/Resources" ]] && root="$root/HP 1020 Print.app/Contents/Resources"
+[[ -x "$root/hp1020_usb" && -f "$root/sihp1020.dl" && -x "$root/foo2zjs-wrapper" && -x "$root/foo2zjs" && -x "$root/foo2zjs-pstops" ]] || {
+    print -u2 "Print pipeline missing. Run ./prepare-firmware.sh and ./build-app.sh first."
+    exit 1
+}
 gs=${commands[gs]:-/opt/homebrew/bin/gs}
 [[ -x "$gs" ]] || gs=/usr/local/bin/gs
 [[ -x "$gs" ]] || { print -u2 "Ghostscript not found"; exit 1; }
