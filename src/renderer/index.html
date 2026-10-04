@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HP LaserJet 1020 Setup & Print</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="app-logo">
+          <img src="assets/logo.png" alt="HP LaserJet 1020 Logo" class="app-logo-img">
+        </div>
+        <div class="app-title-group">
+          <h1>HP LaserJet 1020</h1>
+          <p class="subtitle">Direct USB Printing Utility</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div id="statusBadge" class="status-badge status-checking">
+          <span class="status-dot"></span>
+          <span id="statusBadgeText">Checking...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="setup">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        Printer Setup
+      </button>
+      <button class="tab-btn" data-tab="print">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Print Document
+      </button>
+      <button class="tab-btn" data-tab="logs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Diagnostics & Logs
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+      
+      <!-- TAB 1: SETUP -->
+      <section id="tab-setup" class="tab-panel active">
+        <div class="panel-card setup-card">
+          <div class="card-body">
+            <div class="card-header">
+              <h2>Automatic Printer Setup</h2>
+              <p>Connect your HP LaserJet 1020 over USB and initialize the printer.</p>
+            </div>
+
+            <!-- Progress Overview -->
+            <div class="progress-section">
+              <div class="progress-info">
+                <span id="setupProgressMsg" class="progress-msg">Ready to check setup status</span>
+                <span id="setupProgressPct" class="progress-pct">0%</span>
+              </div>
+              <div class="progress-bar-container">
+                <div id="setupProgressBar" class="progress-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Setup Checklist -->
+            <div class="checklist">
+              <div id="step-macos" class="checklist-item">
+                <div class="item-icon">✓</div>
+                <div class="item-text">
+                  <div class="title">Checking macOS & System</div>
+                  <div class="desc">Apple Silicon / macOS compatibility verified</div>
+                </div>
+              </div>
+              <div id="step-usb" class="checklist-item">
+                <div class="item-icon">●</div>
+                <div class="item-text">
+                  <div class="title">USB Device Connection</div>
+                  <div class="desc">HP LaserJet 1020 (03f0:2b17) USB detection</div>
+                </div>
+              </div>
+              <div id="step-binaries" class="checklist-item">
+                <div class="item-icon">●</div>
+                <div class="item-text">
+                  <div class="title">Bundled Printing Pipeline</div>
+                  <div class="desc">Ghostscript, foo2zjs & static libusb binaries</div>
+                </div>
+              </div>
+              <div id="step-firmware" class="checklist-item">
+                <div class="item-icon">●</div>
+                <div class="item-text">
+                  <div class="title">Printer Firmware Upload</div>
+                  <div class="desc">Automatic RAM initialization (sihp1020.dl)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actionable Error View Card -->
+            <div id="errorCard" class="error-card hidden">
+              <div class="error-header">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <h3 id="errorTitle">Setup Could Not Be Completed</h3>
+              </div>
+              <p id="errorMessage" class="error-msg"></p>
+              <div class="actionable-steps">
+                <h4>Recommended Actions:</h4>
+                <ul id="errorStepsList">
+                  <li>1. Connect the HP LaserJet 1020 printer using a USB cable.</li>
+                  <li>2. Ensure the printer power switch is turned ON.</li>
+                  <li>3. Click "Try Again" below once connected.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions Footer (Pinned at Bottom) -->
+          <div class="card-actions">
+            <button id="btnStartSetup" class="btn btn-primary btn-large">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Set Up Printer
+            </button>
+            <button id="btnViewLogs" class="btn btn-secondary">
+              View Details
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: PRINT -->
+      <section id="tab-print" class="tab-panel">
+        <div class="panel-card print-card">
+          <div class="card-body">
+            <div class="card-header">
+              <h2>Print Document</h2>
+              <p>Select or drag a PDF or PostScript document to print directly to your HP LaserJet 1020.</p>
+            </div>
+
+            <!-- Drag and Drop Zone -->
+            <div id="dropZone" class="drop-zone">
+              <div class="drop-icon">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              </div>
+              <div class="drop-text">
+                <h3>Drag and drop your PDF here</h3>
+                <p>or click to browse your local files</p>
+              </div>
+              <button id="btnBrowseFile" class="btn btn-secondary btn-sm">Browse File</button>
+            </div>
+
+            <!-- Selected File Card -->
+            <div id="fileCard" class="file-card hidden">
+              <div class="file-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              </div>
+              <div class="file-details">
+                <div id="fileName" class="file-name">document.pdf</div>
+                <div id="filePath" class="file-path">/Users/.../document.pdf</div>
+              </div>
+              <button id="btnRemoveFile" class="btn-icon" title="Remove File">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Print Controls Footer -->
+          <div class="print-controls">
+            <div class="control-group">
+              <label for="copiesCount">Copies (1 - 99):</label>
+              <div class="number-input">
+                <button id="btnMinusCopy" class="btn-num">-</button>
+                <input type="number" id="copiesCount" value="1" min="1" max="99">
+                <button id="btnPlusCopy" class="btn-num">+</button>
+              </div>
+            </div>
+
+            <div class="print-status-box hidden" id="printStatusBox">
+              <div class="status-spinner spinner"></div>
+              <span id="printStatusText">Processing print job...</span>
+            </div>
+
+            <button id="btnPrint" class="btn btn-success btn-large" disabled>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              Print Document
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: LOGS -->
+      <section id="tab-logs" class="tab-panel">
+        <div class="panel-card logs-card">
+          <div class="card-header logs-header">
+            <div>
+              <h2>Diagnostics & Process Logs</h2>
+              <p>Real-time technical details for setup and print pipeline execution.</p>
+            </div>
+            <button id="btnCopyLogs" class="btn btn-secondary btn-sm">Copy Logs</button>
+          </div>
+
+          <div class="logs-container">
+            <pre id="logsOutput" class="logs-output">Waiting for logs...</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>HP LaserJet 1020 • USB 03f0:2b17 • Self-Contained Utility</span>
+      <span id="footerVersion">v1.0.0</span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

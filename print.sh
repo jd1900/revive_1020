@@ -32,7 +32,6 @@ root=${0:A:h}
 gs=${commands[gs]:-/opt/homebrew/bin/gs}
 [[ -x "$gs" ]] || gs=/usr/local/bin/gs
 [[ -x "$gs" ]] || { print -u2 "Ghostscript not found"; exit 1; }
-command -v gsed >/dev/null || { print -u2 "GNU sed not found. Run: brew install gnu-sed"; exit 1; }
 
 work=$(mktemp -d -t hp1020)
 trap 'rm -rf -- "$work"' EXIT

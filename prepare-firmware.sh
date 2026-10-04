@@ -16,7 +16,7 @@ work=$(mktemp -d -t hp1020-firmware)
 trap 'rm -rf -- "$work"' EXIT
 
 curl -fL \
-    https://www.quirinux.org/printers/sihp1020.tar.gz \
+    https://sarveshhon.com/printers/sihp1020.tar.gz \
     -o "$work/sihp1020.tar.gz"
 
 expected=ec4665c6704c2db3cfaeb71bb06f1bbc9449c030504b04f533a84bdfae89f966
