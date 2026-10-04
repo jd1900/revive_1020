@@ -3,3 +3,8 @@ HP 1020 Print.app/
 firmware/
 hp1020_usb
 *.zm
+*.dl
+node_modules/
+dist/
+bundled_resources/
+scratch/

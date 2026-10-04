@@ -1,0 +1,58 @@
+{
+  "name": "hp-laserjet-1020",
+  "version": "1.0.0",
+  "description": "Self-contained macOS application for HP LaserJet 1020 USB printing",
+  "main": "src/main/index.js",
+  "scripts": {
+    "build:resources": "zsh scripts/build-resources.sh",
+    "predev": "npm run build:resources",
+    "dev": "electron .",
+    "prepack": "npm run build:resources",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --mac dmg"
+  },
+  "keywords": [
+    "macOS",
+    "HP",
+    "LaserJet",
+    "1020",
+    "printer",
+    "driver"
+  ],
+  "author": "Antigravity",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "electron": "^34.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "local.hp1020.print",
+    "productName": "HP LaserJet 1020",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/icon.icns",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "bundled_resources",
+        "to": "bundled_resources",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "**/bundled_resources/**"
+    ]
+  }
+}
