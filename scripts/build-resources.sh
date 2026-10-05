@@ -185,9 +185,13 @@ trap 'rm -rf -- "$work"' EXIT
 echo "[STEP 3/4] Rasterizing for HP LaserJet 1020..."
 raster_err="$work/raster.err"
 raster_failed=0
+# foo2zjs-wrapper expands $GSBIN without quotes. An absolute path fails
+# when the .app name contains spaces ("HP LaserJet 1020.app"): the shell
+# splits it and tries to execute the first word. The bare name is resolved
+# through PATH, which already lists this bundle's bin directory.
 if ! (
     cd "$bin_dir"
-    PATH="$bin_dir:$scripts_dir:$PATH" GSBIN="$gs_bin" "$wrapper" \
+    PATH="$bin_dir:$scripts_dir:$PATH" GSBIN=gs "$wrapper" \
         -r600x600 -P -z1 -L0 -p9 -n "$copies" \
         "$work/input.ps" > "$work/job.zm"
 ) 2>"$raster_err"; then
